@@ -1,4 +1,5 @@
-import { Calendar } from 'lucide-react';
+import { Calendar, ArrowDown } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export function Timeline() {
   const events = [
@@ -95,48 +96,73 @@ export function Timeline() {
   };
 
   return (
-    <div className="pt-16 min-h-screen bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="pt-16 min-h-screen bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="flex items-center mb-6">
           <Calendar className="mr-3" size={32} />
-          <h1 className="text-gray-900">Chronologie</h1>
+          <h1 className="text-gray-900 text-3xl font-bold">Chronologie</h1>
         </div>
-        
+
         <p className="text-gray-600 mb-16 max-w-3xl">
-          L'évolution de la télémédecine et de l'e-santé : des premières expérimentations 
+          L'évolution de la télémédecine et de l'e-santé : des premières expérimentations
           aux défis contemporains.
         </p>
 
         <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-green-200" />
+          {/* Central Line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-1 bg-green-200 hidden md:block">
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+              <ArrowDown className="text-green-300 w-8 h-8" />
+            </div>
+          </div>
+
+          {/* Mobile Line */}
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-green-200 md:hidden" />
 
           {/* Events */}
-          <div className="space-y-12">
+          <div className="space-y-12 md:space-y-24">
             {events.map((event, index) => (
-              <div key={index} className="relative pl-20">
-                {/* Timeline dot */}
-                <div className="absolute left-6 top-2 w-5 h-5 bg-green-600 rounded-full border-4 border-white" />
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                  }`}
+              >
+                {/* Mobile Dot */}
+                <div className="absolute left-6 top-6 w-5 h-5 bg-green-600 rounded-full border-4 border-white md:hidden z-10" />
 
-                <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-green-200 transition-colors">
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="px-3 py-1 bg-green-600 text-white text-xs rounded-full">
-                      {event.year}
-                    </span>
-                    <span className={`px-3 py-1 text-xs rounded-full border ${getCategoryColor(event.category)}`}>
-                      {getCategoryLabel(event.category)}
-                    </span>
+                {/* Desktop Center Dot */}
+                <div className="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-green-600 rounded-full border-4 border-white z-10" />
+
+                {/* Content Spacer for Desktop */}
+                <div className="hidden md:block w-1/2" />
+
+                {/* Content Card */}
+                <div className={`w-full md:w-1/2 pl-20 md:pl-0 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'
+                  }`}>
+                  <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-green-200 transition-all hover:shadow-md">
+                    <div className="flex items-start justify-between mb-3">
+                      <span className="px-3 py-1 bg-green-600 text-white text-xs rounded-full font-medium">
+                        {event.year}
+                      </span>
+                      <span className={`px-3 py-1 text-xs rounded-full border ${getCategoryColor(event.category)}`}>
+                        {getCategoryLabel(event.category)}
+                      </span>
+                    </div>
+
+                    <h3 className="text-gray-900 mb-2 font-bold text-lg">{event.title}</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">{event.description}</p>
                   </div>
-                  
-                  <h3 className="text-gray-900 mb-2">{event.title}</h3>
-                  <p className="text-sm text-gray-600">{event.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
             <div className="w-4 h-4 bg-orange-600 rounded-full mb-2" />
             <p className="text-xs text-gray-700">Innovation technologique</p>
