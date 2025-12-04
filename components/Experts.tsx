@@ -110,7 +110,7 @@ export function Experts() {
         <div className="mt-16 p-8 bg-gray-50 rounded-lg">
           <h3 className="text-gray-900 mb-4">Méthodologie des entretiens</h3>
           <p className="text-sm text-gray-600 mb-4">
-            Les entretiens ont été menés entre septembre et novembre 2024, en présentiel ou en visioconférence. 
+            Les entretiens ont été menés entre septembre et novembre 2025, en présentiel ou en visioconférence. 
             Chaque entretien a duré entre 45 et 90 minutes et a été retranscrit intégralement.
           </p>
           <p className="text-sm text-gray-600">
